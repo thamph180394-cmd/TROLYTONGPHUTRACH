@@ -8211,7 +8211,7 @@
             : { active: true, campus_id: state.cache.campuses[0]?.id };
           openModal(
             id ? "Sửa lớp" : "Thêm lớp",
-            `<form id="classForm"><div class="form-grid"><div class="field"><label class="required">Tên lớp/chi đội</label><input name="class_name" value="${esc(c.class_name || "")}" required></div><div class="field"><label class="required">Khối</label><select name="grade">${[6, 7, 8, 9].map((g) => `<option value="${g}" ${Number(c.grade) === g ? "selected" : ""}>Khối ${g}</option>`).join("")}</select></div><div class="field"><label class="required">Cơ sở</label><select name="campus_id">${state.cache.campuses.map((x) => `<option value="${x.id}" ${c.campus_id === x.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div><div class="field"><label>Giáo viên chủ nhiệm</label><input name="teacher" value="${esc(c.teacher || "")}"></div><label class="check-row"><input type="checkbox" name="active" value="true" ${c.active !== false ? "checked" : ""}> Đang hoạt động</label></div></form>`,
+            `<form id="classForm"><div class="form-grid"><div class="field"><label class="required">Tên lớp/chi đội</label><input name="class_name" value="${esc(c.class_name || "")}" required></div><div class="field"><label class="required">Khối</label><select name="grade">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((g) => `<option value="${g}" ${Number(c.grade) === g ? "selected" : ""}>Khối ${g}</option>`).join("")}</select></div><div class="field"><label class="required">Cơ sở</label><select name="campus_id">${state.cache.campuses.map((x) => `<option value="${x.id}" ${c.campus_id === x.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div><div class="field"><label>Giáo viên chủ nhiệm</label><input name="teacher" value="${esc(c.teacher || "")}"></div><label class="check-row"><input type="checkbox" name="active" value="true" ${c.active !== false ? "checked" : ""}> Đang hoạt động</label></div></form>`,
             `<button class="btn" id="cancelClass">Hủy</button><button class="btn primary" id="saveClass">Lưu lớp</button>`,
           );
           $("#cancelClass").onclick = closeModal;
@@ -8267,7 +8267,7 @@
             const errors = parsed.filter(
               (x) =>
                 !x.class_name ||
-                ![6, 7, 8, 9].includes(x.grade) ||
+                ![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(x.grade) ||
                 !state.cache.campuses.some((c) => c.code === x.campus_code),
             );
             $("#importPreview").innerHTML =
@@ -8281,7 +8281,7 @@
                     x.grade,
                     x.campus_code,
                     !x.class_name ||
-                    ![6, 7, 8, 9].includes(x.grade) ||
+                    ![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(x.grade) ||
                     !state.cache.campuses.some((c) => c.code === x.campus_code)
                       ? "Lỗi"
                       : "Hợp lệ",
