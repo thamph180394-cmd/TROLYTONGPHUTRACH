@@ -1,0 +1,209 @@
+{
+  "product": "Trợ lý Tổng phụ trách Đội THCS",
+  "school": "TRƯỜNG THCS (CHƯA CẤU HÌNH)",
+  "version": "3.0.0-rc.1",
+  "release_status": "release-candidate-hold",
+  "build_date": "2026-08-14",
+  "build_timezone": "Asia/Ho_Chi_Minh",
+  "app_id": "vn.giaoducso40.tpt.thcs.standard",
+  "package_id": "vn.giaoducso40.tpt.thcs.standard",
+  "database_name": "TPT_DOI_THCS_DB",
+  "school_profile_id": "thcs-local-profile-001",
+  "schema_version": 8,
+  "backup_format": "TPT-BACKUP-3",
+  "build_id": "20260814-rc1",
+  "git_commit": null,
+  "modes": {
+    "standalone_html": {
+      "built": true,
+      "automated_tests": "passed"
+    },
+    "pwa": {
+      "built": true,
+      "static_checks": "passed",
+      "real_browser_offline_test": "not_run_missing_browser_executable"
+    },
+    "exe": {
+      "built": false,
+      "readiness": "adapter-contract-and-stub-only"
+    }
+  },
+  "license": {
+    "mode": "client-side-demo",
+    "commercial_ready": false
+  },
+  "sample_data": true,
+  "real_school_data_in_source": false,
+  "network_runtime": {
+    "external_urls": 0,
+    "analytics": false,
+    "telemetry": false,
+    "cloud_sync_enabled": false
+  },
+  "tests": {
+    "automated_total": 62,
+    "automated_passed": 62,
+    "automated_failed": 0,
+    "known_blocker_critical_high_defects_in_tested_scope": 0,
+    "official_release_gate": "hold",
+    "report": "BAO_CAO_TEST.md",
+    "remaining": "LOI_CON_LAI.md"
+  },
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 118,
+      "sha256": "07d01cca0f82512eaa8147a1bf66b3a1930ab6db2310f03e5fde17af68ffde7d"
+    },
+    {
+      "path": "index.html",
+      "bytes": 379537,
+      "sha256": "4dd0372505925d0bcdbcb852156e4bfbfaca3bd862173b4ccd28350086cbb554"
+    },
+    {
+      "path": "index_tro_ly_tpt_doi_thcs_nang_cap.html",
+      "bytes": 379537,
+      "sha256": "4dd0372505925d0bcdbcb852156e4bfbfaca3bd862173b4ccd28350086cbb554"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 731,
+      "sha256": "90db1734b3ccf8ab67b5c87dfe433e364a2d075db39e16fb918501af3b2ed6ec"
+    },
+    {
+      "path": "sw.js",
+      "bytes": 2027,
+      "sha256": "20a3fa3dc4ca7f090914ed6b3896afa9d7767218de8c878c4f3d88fcb65510c8"
+    },
+    {
+      "path": "offline.html",
+      "bytes": 1705,
+      "sha256": "86c92b9b65fd7d036c13746de8e7546e667bbd639ccc644fb3d0254d15e70cf6"
+    },
+    {
+      "path": "404.html",
+      "bytes": 1705,
+      "sha256": "86c92b9b65fd7d036c13746de8e7546e667bbd639ccc644fb3d0254d15e70cf6"
+    },
+    {
+      "path": "assets/icons/tpt-doi-icon.svg",
+      "bytes": 583,
+      "sha256": "f13d685249f1af582e444e98d77351155946797b7a8732f7bfa5c5a90a05f424"
+    },
+    {
+      "path": "assets/icons/tpt-doi-icon-192.png",
+      "bytes": 4471,
+      "sha256": "bd1da92388f3129b6b4cdd9458adbba5f872c67228f38542c10af369d32797a9"
+    },
+    {
+      "path": "assets/icons/tpt-doi-icon-512.png",
+      "bytes": 18114,
+      "sha256": "d62b0a15d64492c105ca1bbdab306a87afb99278f5c5043671070b72ad5d320c"
+    },
+    {
+      "path": "package.json",
+      "bytes": 717,
+      "sha256": "a9655565f1f01a032b834265795505169f5954966b04009718c11f1f86359d1c"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 19512,
+      "sha256": "c7f07241205743143c60f9814998471a550fe21798e50ca77882f7ffc66e29ac"
+    },
+    {
+      "path": "core/data-contract.json",
+      "bytes": 816,
+      "sha256": "a2327f11457f1a137745182c432128f5eadf8b832c38e57334292ccdac6e193a"
+    },
+    {
+      "path": "core/platform-adapter.cjs",
+      "bytes": 1268,
+      "sha256": "a30eb70c8101e6bcff9c1e7eb1a4f05a0861489fa380836b1d586cc2f79f3a14"
+    },
+    {
+      "path": "school-profile/default.json",
+      "bytes": 427,
+      "sha256": "23c51e3b00799d24565dd13068a913fb369840014a2fb1639c5e53a4cc0ce4a0"
+    },
+    {
+      "path": "desktop/ADAPTER_CONTRACT.md",
+      "bytes": 1410,
+      "sha256": "6f4f0bf25d60779add7dc8158bf49a37e965639060d68ff3eacfaa218ca56c85"
+    },
+    {
+      "path": "desktop/tauri-adapter.stub.cjs",
+      "bytes": 755,
+      "sha256": "4fda6c143dedddc0878065975098aa6d4ee05af1c791917b897b15d11305b9d9"
+    },
+    {
+      "path": "tests/static.cjs",
+      "bytes": 4743,
+      "sha256": "d1f2157b673078fbaf72beb1d413b1e400300eccb75b3a5936b2865cf5eb36df"
+    },
+    {
+      "path": "tests/integration-core.cjs",
+      "bytes": 5994,
+      "sha256": "9a875fdaeb0d65f74eede5bd8b71d08d001fc6ebf302c7abed238de61fadd258"
+    },
+    {
+      "path": "tests/migration.cjs",
+      "bytes": 5869,
+      "sha256": "a864458d9f220d820338f7de62761192d9ee6d164fafb1b32ccba8529d4af13f"
+    },
+    {
+      "path": "tests/features.cjs",
+      "bytes": 16231,
+      "sha256": "86cb803f74039248a062094f0e29529bdaada124c7de4a022587b0296e8b2b42"
+    },
+    {
+      "path": "tests/performance.cjs",
+      "bytes": 9667,
+      "sha256": "657b2acb55f01fbcb0aabccd1b816bf9cca98f57c23f3c0b7df9a0c4d7d97f79"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1947,
+      "sha256": "10dcb1e07707c79447a23b545022d4a86537792534e91333d453606961fed5f6"
+    },
+    {
+      "path": "HUONG_DAN_BAN_GIAO.md",
+      "bytes": 8673,
+      "sha256": "d4f6d01d2ed169d44ec975f7e5baf9b11a34f0f9e2e5f7c3d5bcfcd00e07a336"
+    },
+    {
+      "path": "README_GITHUB_PAGES.md",
+      "bytes": 1158,
+      "sha256": "d79f1f9465ed288dcb95b0c723f7a5b81d43721ba0d2bbe748b6f0131b4abf21"
+    },
+    {
+      "path": "BAO_CAO_KIEM_TOAN_BAN_DAU.md",
+      "bytes": 8247,
+      "sha256": "f50510e6b9f1b15b016b1d1cb104dbe7511b76d472cb935730041427600ed561"
+    },
+    {
+      "path": "BAO_CAO_TEST.md",
+      "bytes": 6613,
+      "sha256": "4ffaf45c02235a099de1abb1ada86bc16f34d3774320ae05c95e33634c21b50d"
+    },
+    {
+      "path": "BAO_CAO_DIEN_TAP.md",
+      "bytes": 1325,
+      "sha256": "f3acc131fc7b26beae4b93c2ba35c6fc090c4fb77fe115255abcd6236079c727"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 2368,
+      "sha256": "8485ff25286e47d2f436cf5e1eadc92e1198cb1977215956322245d38532569c"
+    },
+    {
+      "path": "DANH_SACH_LOI_DA_SUA.md",
+      "bytes": 2115,
+      "sha256": "88741990781d82fae4e00843f06743a855c6b2ec9115950e56d21bbf55def8bd"
+    },
+    {
+      "path": "LOI_CON_LAI.md",
+      "bytes": 2595,
+      "sha256": "165dd9dad7dfc21917dc3f2465ecbda1a3cc740ca5ea483ebbc853a7d09b52ec"
+    }
+  ]
+}

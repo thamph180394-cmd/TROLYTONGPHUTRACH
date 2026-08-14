@@ -1,0 +1,22 @@
+{
+  "name": "tro-ly-tpt-doi-thcs",
+  "version": "3.0.0-rc.1",
+  "private": true,
+  "description": "Trợ lý Tổng phụ trách Đội THCS chạy local-first và PWA.",
+  "scripts": {
+    "test:static": "node tests/static.cjs",
+    "test:core": "node tests/integration-core.cjs",
+    "test:migration": "node tests/migration.cjs",
+    "test:features": "node tests/features.cjs",
+    "test:performance": "node tests/performance.cjs",
+    "test": "npm run test:static && npm run test:core && npm run test:migration && npm run test:features && npm run test:performance"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "acorn": "8.15.0",
+    "fake-indexeddb": "6.2.5",
+    "jsdom": "26.1.0"
+  }
+}

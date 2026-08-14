@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+*.log
+*.tdt
+*.tptbackup
+backups/
+user-data/
+test-results/
+playwright-report/
+preview-subpath/
