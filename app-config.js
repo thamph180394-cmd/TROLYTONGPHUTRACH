@@ -4,7 +4,7 @@
 window.TPT_APP_CONFIG = Object.freeze({
   "APP_VERSION": "3.1.0-rc.1",
   "BUILD_ID": "20260814-drive-rc1",
-  "SCHEMA_VERSION": 9,
+  "SCHEMA_VERSION": 10,
   "APP_ID": "vn.giaoducso40.tpt.thcs.thcs",
   "SCHOOL_PROFILE_ID": "thcs-thcs-profile-001",
   "APP_NAMESPACE": "tpt_thcs_thcs_profile_001",
