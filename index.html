@@ -8729,13 +8729,7 @@
           const c = id
             ? await db.get("classes", id)
             : { active: true, campus_id: state.cache.campuses[0]?.id };
-          const [school] = await db.all("schools"),
-            allowedGrades =
-              school?.school_level === "TH"
-                ? [1, 2, 3, 4, 5]
-                : school?.school_level === "THCS"
-                  ? [6, 7, 8, 9]
-                  : [1, 2, 3, 4, 5, 6, 7, 8, 9];
+          const allowedGrades = [1, 2, 3, 4, 5, 6, 7, 8, 9];
           openModal(
             id ? "Sửa lớp" : "Thêm lớp",
             `<form id="classForm"><div class="form-grid"><div class="field"><label class="required">Mã lớp</label><input name="code" value="${esc(c.code || "")}" required maxlength="40" placeholder="VD: CS1-6A1"></div><div class="field"><label class="required">Tên lớp/chi đội</label><input name="class_name" value="${esc(c.class_name || "")}" required maxlength="80"></div><div class="field"><label class="required">Khối</label><select name="grade">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((g) => `<option value="${g}" ${Number(c.grade) === g ? "selected" : ""}>Khối ${g}</option>`).join("")}</select></div><div class="field"><label class="required">Cơ sở</label><select name="campus_id">${state.cache.campuses.map((x) => `<option value="${x.id}" ${c.campus_id === x.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div><div class="field"><label>Giáo viên chủ nhiệm</label><input name="teacher" value="${esc(c.teacher || "")}" maxlength="150"></div><div class="field full"><label>Ghi chú</label><textarea name="notes" maxlength="500">${esc(c.notes || "")}</textarea></div><label class="check-row"><input type="checkbox" name="active" value="true" ${c.active !== false ? "checked" : ""}> Đang hoạt động</label></div></form>`,
