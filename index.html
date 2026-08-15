@@ -1765,6 +1765,152 @@
           font-size: 19px;
         }
       }
+      .stepper {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .stepper span {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 7px 8px;
+        background: #fff;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+      }
+      .stepper span.active {
+        border-color: var(--blue);
+        background: var(--blue-soft);
+        color: var(--blue2);
+        font-weight: 800;
+      }
+      .import-grid {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.9fr) minmax(0, 2.1fr);
+        gap: 12px;
+        align-items: start;
+      }
+      .mapping-grid {
+        display: grid;
+        grid-template-columns: minmax(150px, 1fr) minmax(180px, 1.2fr) minmax(150px, 1fr);
+        gap: 7px 10px;
+        align-items: center;
+      }
+      .mapping-grid .mapping-head {
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--muted);
+      }
+      .drop-zone.smart-import-drop {
+        min-height: 108px;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+      }
+      .drop-zone.smart-import-drop.dragging {
+        border-color: var(--blue);
+        background: var(--blue-soft);
+      }
+      .metric-row {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(88px, 1fr));
+        gap: 8px;
+      }
+      .metric {
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 9px;
+        padding: 10px;
+      }
+      .metric strong {
+        display: block;
+        font-size: 20px;
+        color: #0a3764;
+      }
+      .metric span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        padding-top: 9px;
+        flex-wrap: wrap;
+      }
+      .bulkbar {
+        position: sticky;
+        top: 0;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        border: 1px solid #b9d8f5;
+        background: #edf7ff;
+        padding: 8px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+      }
+      tr.row-error > td {
+        background: #fff1f1;
+      }
+      tr.row-warning > td {
+        background: #fff9e8;
+      }
+      .cell-edit {
+        min-width: 110px;
+        height: 30px;
+        padding: 4px 6px;
+      }
+      .progress-track {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #e8edf3;
+      }
+      .progress-track > span {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--blue);
+        transition: width 0.15s ease;
+      }
+      .file-preview {
+        max-height: 220px;
+        overflow: auto;
+        white-space: pre-wrap;
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+      }
+      .rotate-preview {
+        max-width: 100%;
+        max-height: 260px;
+        object-fit: contain;
+        transition: transform 0.2s ease;
+      }
+      @media (max-width: 800px) {
+        .stepper {
+          grid-template-columns: 1fr;
+        }
+        .import-grid {
+          grid-template-columns: 1fr;
+        }
+        .metric-row {
+          grid-template-columns: repeat(2, minmax(100px, 1fr));
+        }
+        .mapping-grid {
+          grid-template-columns: 1fr;
+        }
+        .mapping-grid .mapping-head {
+          display: none;
+        }
+      }
       @media print {
         body {
           overflow: visible;
@@ -1801,6 +1947,14 @@
         }
         table {
           font-size: 10pt;
+        }
+        thead {
+          display: table-header-group;
+        }
+        tr,
+        img {
+          break-inside: avoid;
+          page-break-inside: avoid;
         }
         th {
           position: static;
@@ -1972,6 +2126,15 @@
       class="hidden"
       accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.png,.jpg,.jpeg,.webp,.zip"
     />
+    <input
+      type="file"
+      id="smartImportFile"
+      class="hidden"
+      multiple
+      accept=".xlsx,.xls,.csv,.tsv,.docx,.pdf,.png,.jpg,.jpeg,.webp"
+    />
+    <script src="./assets/js/import-engine.js"></script>
+    <script src="./assets/js/upgrade-features.js"></script>
     <script src="./app-config.js"></script>
     <script>
       "use strict";
@@ -1979,16 +2142,16 @@
         const PUBLIC_CONFIG = Object.freeze(window.TPT_APP_CONFIG || {});
         const APP = {
           name: "Trợ lý Tổng phụ trách Đội THCS",
-          version: PUBLIC_CONFIG.APP_VERSION || "3.1.0-rc.1",
-          schema: Number(PUBLIC_CONFIG.SCHEMA_VERSION || 9),
+          version: PUBLIC_CONFIG.APP_VERSION || "3.2.0",
+          schema: Number(PUBLIC_CONFIG.SCHEMA_VERSION || 10),
           dbName: PUBLIC_CONFIG.DB_NAME || "TPT_DOI_THCS_DB",
           appId:
-            PUBLIC_CONFIG.APP_ID || "vn.giaoducso40.tpt.thcs.standard",
+            PUBLIC_CONFIG.APP_ID || "vn.giaoducso40.tpt.thcs.thcs",
           schoolProfileId:
-            PUBLIC_CONFIG.SCHOOL_PROFILE_ID || "thcs-local-profile-001",
+            PUBLIC_CONFIG.SCHOOL_PROFILE_ID || "thcs-thcs-profile-001",
           namespace:
-            PUBLIC_CONFIG.APP_NAMESPACE || "tpt_thcs_standard_profile_001",
-          schoolName: PUBLIC_CONFIG.SCHOOL_NAME || "TRƯỜNG THCS",
+            PUBLIC_CONFIG.APP_NAMESPACE || "tpt_thcs_thcs_profile_001",
+          schoolName: PUBLIC_CONFIG.SCHOOL_NAME || "THCS NGUYỄN THỊ ĐỊNH",
           schoolLevel: PUBLIC_CONFIG.SCHOOL_LEVEL || "THCS",
           googleClientId: String(PUBLIC_CONFIG.GOOGLE_CLIENT_ID || "").trim(),
           expectedEmailHash: String(
@@ -2003,7 +2166,7 @@
           basePath: String(PUBLIC_CONFIG.BASE_PATH || "./").trim() || "./",
           backupFormat: "TPT-BACKUP-3",
           driveFormat: "TPT-DRIVE-SYNC-1",
-          buildId: PUBLIC_CONFIG.BUILD_ID || "20260814-drive-rc1",
+          buildId: PUBLIC_CONFIG.BUILD_ID || "20260815-smart-import-v10",
         };
         const STORES = [
           "profiles",
@@ -2067,6 +2230,12 @@
           "backup_records",
           "year_transition_logs",
           "report_packages",
+          "students",
+          "student_incidents",
+          "import_jobs",
+          "import_staging",
+          "import_mappings",
+          "import_undo_batches",
         ];
         const SYSTEM_STORES = new Set([
           "operation_journal",
@@ -2078,6 +2247,8 @@
           "migration_logs",
           "audit_logs",
           "license_events",
+          "import_staging",
+          "import_undo_batches",
         ]);
         const SNAPSHOT_EXCLUDED_STORES = new Set([
           ...SYSTEM_STORES,
@@ -2092,6 +2263,8 @@
           "form_drafts",
           "restore_staging",
           "backup_handles",
+          "import_staging",
+          "import_undo_batches",
         ]);
         const SYNC_EXCLUDED_STORES = new Set([
           "sync_outbox",
@@ -2105,6 +2278,9 @@
           "migration_logs",
           "license_events",
           "app_settings",
+          "import_jobs",
+          "import_staging",
+          "import_undo_batches",
         ]);
         const $ = (s) => document.querySelector(s),
           $$ = (s) => [...document.querySelectorAll(s)];
@@ -4824,6 +5000,7 @@
         const db = new LocalDataProvider(),
           cloud = new GoogleDriveSyncProvider(),
           assistant = new AssistantProvider();
+        let upgrade = null;
 
         async function startOperation(operation, details = {}) {
           return db.put(
@@ -4866,6 +5043,8 @@
           ["plans", "▤", "Kế hoạch"],
           ["tasks", "✓", "Công việc và checklist"],
           ["calendar", "▦", "Lịch hoạt động"],
+          ["students", "♙", "Học sinh"],
+          ["incidents", "⚠", "Vi phạm học sinh"],
           ["scores", "★", "Thi đua lớp"],
           ["activities", "⚑", "Hoạt động Đội"],
           ["organization", "♟", "Tổ chức Liên đội"],
@@ -4875,6 +5054,7 @@
           ["equipment", "◫", "Thiết bị Đội"],
           ["reports", "▥", "Báo cáo"],
           ["assistant", "◎", "Trợ lý tổng hợp"],
+          ["imports", "⇩", "Trung tâm nhập dữ liệu"],
           ["backup", "⇄", "Sao lưu – đồng bộ"],
           ["settings", "⚙", "Thiết lập"],
         ];
@@ -5144,6 +5324,7 @@
               await recoverInterruptedOperations();
               await ensureSeed();
               await migrateEnhancedData();
+              await upgrade.migrateSmartImportData();
               await generateRecurringTasks();
               await ensureStorageProtection();
               await ensureScheduledSnapshots();
@@ -5676,6 +5857,8 @@
             plans: () => renderEntity("plans"),
             tasks: renderTasks,
             calendar: renderCalendar,
+            students: () => upgrade.renderStudents(),
+            incidents: () => upgrade.renderIncidents(),
             scores: renderScores,
             activities: () => renderEntity("activities"),
             organization: () => renderEntity("organization"),
@@ -5685,6 +5868,7 @@
             equipment: () => renderEntity("equipment"),
             reports: renderReports,
             assistant: renderAssistant,
+            imports: () => upgrade.renderImportCenter(),
             backup: renderBackup,
             settings: renderSettings,
           };
@@ -6053,7 +6237,7 @@
             pageHead(
               cfg.title,
               cfg.desc,
-              `<button class="btn" data-export-entity="${key}">Xuất CSV</button><button class="btn primary" data-new-entity="${key}">＋ Thêm mới</button>`,
+              `<button class="btn" data-import-entity="${key}">Nhập dữ liệu</button><button class="btn" data-export-entity="csv">CSV</button><button class="btn" data-export-entity="xlsx">Excel</button><button class="btn" data-export-entity="word">Word</button><button class="btn" data-export-entity="print">In/PDF</button><button class="btn primary" data-new-entity="${key}">＋ Thêm mới</button>`,
             ) +
               `<div class="toolbar"><input class="grow" id="entitySearch" placeholder="Tìm trong ${esc(cfg.title.toLowerCase())}…"><select id="entityCampus"><option value="all">Tất cả cơ sở</option>${state.cache.campuses.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join("")}</select><span class="muted">${rows.length} bản ghi</span></div><div class="table-wrap"><table><thead><tr>${entityColumns(
                 key,
@@ -6090,9 +6274,39 @@
           $$("[data-new-entity]").forEach(
             (b) => (b.onclick = () => entityForm(key)),
           );
-          $$("[data-export-entity]").forEach(
-            (b) => (b.onclick = () => exportEntityCSV(key, rows)),
-          );
+          $$("[data-export-entity]").forEach((button) => {
+            button.onclick = async () => {
+              const format = button.dataset.exportEntity;
+              if (format === "print") return window.print();
+              const columns = entityColumns(key).map(([name, label]) => ({
+                name,
+                label,
+              }));
+              try {
+                await upgrade.exportRows(
+                  rows,
+                  columns,
+                  `${key}-${today()}`,
+                  cfg.title.toUpperCase(),
+                  format,
+                );
+              } catch (error) {
+                toast("Không thể xuất dữ liệu: " + error.message, "bad");
+              }
+            };
+          });
+          $$("[data-import-entity]").forEach((button) => {
+            button.onclick = () => {
+              const type =
+                {
+                  organization: "team_members",
+                  programs: "program_results",
+                }[button.dataset.importEntity] || button.dataset.importEntity;
+              state.importType = type;
+              state.importSession = null;
+              go("imports");
+            };
+          });
         }
         function entityColumns(key) {
           const map = {
@@ -6241,7 +6455,7 @@
                   .join("");
                 input = `<select name="${name}" ${req ? "required" : ""}><option value="">— Chọn —</option>${opts}</select>`;
               } else
-                input = `<input name="${name}" type="${type}" value="${esc(row[name] ?? "")}" ${type === "number" ? 'step="any"' : ""} ${req ? "required" : ""}>`;
+                input = `<input name="${name}" type="${type}" value="${esc(row[name] ?? "")}" ${type === "number" ? 'step="any"' : ""} ${key === "equipment" && name === "quantity" ? 'min="0"' : ""} ${req ? "required" : ""}>`;
               return `<div class="field ${type === "textarea" ? "full" : ""}"><label class="${req ? "required" : ""}">${esc(label)}</label>${input}</div>`;
             })
             .join("");
@@ -6260,6 +6474,18 @@
             data.custom_values = collectCustomValues(fd, customDefs);
             for (const [n, , type] of cfg.fields)
               if (type === "number") data[n] = Number(data[n] || 0);
+            if (key === "equipment" && data.quantity < 0)
+              return toast("Số lượng thiết bị không được âm.", "bad");
+            if (key === "equipment") {
+              data.code = String(data.code || "").trim().toUpperCase();
+              const duplicate = (await db.all("equipment")).find(
+                (item) =>
+                  item.id !== id &&
+                  String(item.code || "").trim().toUpperCase() === data.code,
+              );
+              if (duplicate)
+                return toast("Mã thiết bị đã tồn tại.", "bad");
+            }
             await db.put(cfg.store, {
               ...row,
               ...data,
@@ -6312,28 +6538,7 @@
           );
         }
         function openQuickIncident() {
-          openModal(
-            "Ghi nhận nhanh sự việc",
-            `<form id="incidentForm"><div class="form-grid"><div class="field"><label class="required">Lớp/khu vực</label><input name="subject" required maxlength="100"></div><div class="field"><label>Loại ghi nhận</label><select name="type"><option>Ghi chú</option><option>Điểm cộng đề xuất</option><option>Điểm trừ đề xuất</option><option>Chờ phối hợp</option></select></div><div class="field full"><label class="required">Nội dung và lý do</label><textarea name="description" required maxlength="1000"></textarea></div></div></form><div class="notice warn mt">Ghi nhận này không tự động thay đổi bảng thi đua, đặc biệt khi bảng đã khóa.</div>`,
-            `<button class="btn" id="cancelIncident">Hủy</button><button class="btn primary" id="saveIncident">Lưu ghi nhận</button>`,
-          );
-          $("#cancelIncident").onclick = closeModal;
-          $("#saveIncident").onclick = async () => {
-            const f = $("#incidentForm");
-            if (!f.reportValidity()) return;
-            const d = Object.fromEntries(new FormData(f));
-            await db.put("documents", {
-              name: `${d.type}: ${d.subject}`,
-              type: "Ghi nhận nhanh",
-              date: today(),
-              description: d.description,
-              status: "draft",
-              school_year_id: state.yearId,
-              campus_id: state.campusId,
-            });
-            closeModal();
-            toast("Đã lưu ghi nhận, chưa tác động điểm thi đua");
-          };
+          return upgrade.openIncidentForm();
         }
 
         async function renderTasks() {
@@ -7294,6 +7499,13 @@
             tasks = await scoped("tasks"),
             events = await scoped("calendar_events"),
             activities = await scoped("activities"),
+            incidents = await scoped("student_incidents"),
+            plans = await scoped("plans"),
+            organization = await scoped("team_members"),
+            programs = await scoped("program_results"),
+            commendations = await scoped("commendations"),
+            documents = await scoped("documents"),
+            equipment = await scoped("equipment"),
             rank = await calculateRanking(true),
             classes = await scoped("classes"),
             ctx = await scoreContext(),
@@ -7303,6 +7515,13 @@
             tasks,
             events,
             activities,
+            incidents,
+            plans,
+            organization,
+            programs,
+            commendations,
+            documents,
+            equipment,
             rank,
             classes,
             ctx,
@@ -7325,7 +7544,7 @@
             pageHead(
               "Báo cáo",
               "Tổng hợp số liệu đã xác nhận và truy ngược về bản ghi gốc.",
-              `<button class="btn" id="exportReportPackage">Gói báo cáo chốt</button><button class="btn" id="exportReportCsv">Xuất CSV</button><button class="btn" onclick="window.print()">In/Lưu PDF</button><button class="btn" id="saveReportDraft">Lưu nháp</button><button class="btn primary" id="finalizeReport">Chốt báo cáo</button>`,
+              `<button class="btn" id="exportReportPackage">Gói báo cáo chốt</button><button class="btn" id="exportReportCsv">CSV</button><button class="btn" id="exportReportXlsx">Excel</button><button class="btn" id="exportReportWord">Word</button><button class="btn" onclick="window.print()">In/Lưu PDF</button><button class="btn" id="saveReportDraft">Lưu nháp</button><button class="btn primary" id="finalizeReport">Chốt báo cáo</button>`,
             ) +
               `<div class="toolbar no-print"><select id="reportType"><option value="week">Báo cáo công tác tuần</option><option value="scores">Tổng hợp thi đua lớp</option><option value="tasks">Tiến độ công việc</option><option value="activities">Báo cáo hoạt động</option><option value="equipment">Báo cáo thiết bị</option></select><select id="reportPaper"><option value="landscape">A4 ngang</option><option value="portrait">A4 dọc</option></select><input id="reportRecipient" placeholder="Nơi nhận (tùy chọn)"><select id="reportSubmission"><option value="not_submitted">Chưa gửi</option><option value="submitted">Đã gửi</option><option value="accepted">Đã tiếp nhận</option></select><span class="muted">Số liệu nguồn không sửa tại báo cáo</span></div><div class="notice warn no-print"><strong>Nháp</strong> có thể tạo lại; <strong>báo cáo chốt</strong> lưu nội dung tĩnh, phiên bản, bộ lọc, checksum và trạng thái gửi. Muốn sửa sau chốt phải tạo phiên bản mới.</div><article class="card" id="reportPreview"><div class="card-body">${await reportHTML("week", d)}</div></article><div class="card mt no-print"><div class="card-head"><h2>Phiên bản báo cáo đã lưu</h2><span class="meta">${saved.length} phiên bản</span></div><div class="card-body"><ul class="compact-list">${
                 saved
@@ -7338,6 +7557,26 @@
                 '<li class="muted">Chưa lưu phiên bản báo cáo.</li>'
               }</ul></div></div>`,
           );
+          $("#reportType").insertAdjacentHTML(
+            "beforeend",
+            '<option value="scores_month">Thi đua tháng</option><option value="scores_semester">Thi đua học kỳ</option><option value="scores_year">Thi đua năm học</option><option value="ranking">Xếp hạng lớp</option><option value="incidents">Vi phạm học sinh</option><option value="plans">Kế hoạch</option><option value="organization">Tổ chức Liên đội</option><option value="programs">Rèn luyện – phong trào</option><option value="commendations">Khen thưởng</option><option value="documents">Hồ sơ – minh chứng</option><option value="summary">Báo cáo tổng hợp</option>',
+          );
+          $(".page-actions").insertAdjacentHTML(
+            "beforeend",
+            '<button class="btn" id="saveReportToDocuments">Lưu vào hồ sơ</button>',
+          );
+          const reportWarnings = [];
+          if (d.ctx?.sheet && !["approved", "locked"].includes(d.ctx.sheet.status))
+            reportWarnings.push("Bảng thi đua trong phạm vi đang chọn chưa được duyệt/khóa.");
+          if (d.overdue.length)
+            reportWarnings.push(`${d.overdue.length} công việc đang quá hạn.`);
+          if (await cloud.updatePendingCount())
+            reportWarnings.push("Còn thay đổi đang chờ đồng bộ Google Drive.");
+          if (reportWarnings.length)
+            $("#reportPreview").insertAdjacentHTML(
+              "beforebegin",
+              `<div class="notice warn no-print"><strong>Kiểm tra dữ liệu trước khi tạo báo cáo:</strong><br>${reportWarnings.map(esc).join("<br>")}</div>`,
+            );
           $("#reportType").onchange = async () =>
             ($("#reportPreview .card-body").innerHTML = await reportHTML(
               $("#reportType").value,
@@ -7345,6 +7584,10 @@
             ));
           $("#exportReportCsv").onclick = () =>
             exportReportCSV($("#reportType").value, d);
+          $("#exportReportXlsx").onclick = () =>
+            exportReportStructured($("#reportType").value, d, "xlsx");
+          $("#exportReportWord").onclick = () =>
+            exportReportStructured($("#reportType").value, d, "word");
           $("#exportReportPackage").onclick = () =>
             exportFinalizedReportPackage(state.yearId);
           $("#reportPaper").value = document.body.dataset.paper || "landscape";
@@ -7354,6 +7597,25 @@
             toast("Đã đổi khổ in báo cáo");
           };
           $("#saveReportDraft").onclick = () => saveCurrentReport("draft");
+          $("#saveReportToDocuments").onclick = async () => {
+            const report = await saveCurrentReport("draft");
+            const documentRecord = await db.put("documents", {
+              name: report.name,
+              type: "Báo cáo",
+              date: today(),
+              description: `Báo cáo lưu trong hệ thống • v${report.version} • checksum ${report.content_checksum}`,
+              status: "approved",
+              school_year_id: state.yearId,
+              campus_id: state.campusId,
+              folder_id: "root",
+            });
+            await db.put("document_links", {
+              document_id: documentRecord.id,
+              related_module: "generated_reports",
+              related_record_id: report.id,
+            });
+            toast("Đã lưu báo cáo và liên kết vào Hồ sơ.");
+          };
           $("#finalizeReport").onclick = () => confirmFinalizeCurrentReport();
           $$("[data-open-report]").forEach(
             (b) =>
@@ -7389,6 +7651,13 @@
               events: data.events,
               activities: data.activities,
               ranking: data.rank,
+              incidents: data.incidents,
+              plans: data.plans,
+              organization: data.organization,
+              programs: data.programs,
+              commendations: data.commendations,
+              documents: data.documents,
+              equipment: data.equipment,
             },
             sourceChecksum = await sha256Text(stableJSON(source)),
             existing = (await db.all("generated_reports")).filter(
@@ -7415,7 +7684,14 @@
               data.tasks.length +
               data.events.length +
               data.activities.length +
-              data.rank.length,
+              data.rank.length +
+              data.incidents.length +
+              data.plans.length +
+              data.organization.length +
+              data.programs.length +
+              data.commendations.length +
+              data.documents.length +
+              data.equipment.length,
             config_snapshot: {
               criteria_set_id: data.ctx?.set?.id || null,
               criteria_set_version: data.ctx?.set?.version || null,
@@ -7595,9 +7871,20 @@
           const title = {
             week: "BÁO CÁO CÔNG TÁC TUẦN",
             scores: "TỔNG HỢP THI ĐUA LỚP",
+            scores_month: "TỔNG HỢP THI ĐUA THÁNG",
+            scores_semester: "TỔNG HỢP THI ĐUA HỌC KỲ",
+            scores_year: "TỔNG HỢP THI ĐUA NĂM HỌC",
+            ranking: "XẾP HẠNG LỚP",
             tasks: "BÁO CÁO TIẾN ĐỘ CÔNG VIỆC",
             activities: "BÁO CÁO HOẠT ĐỘNG ĐỘI",
+            incidents: "TỔNG HỢP VI PHẠM HỌC SINH",
+            plans: "TỔNG HỢP KẾ HOẠCH",
+            organization: "TỔ CHỨC LIÊN ĐỘI",
+            programs: "RÈN LUYỆN – PHONG TRÀO",
+            commendations: "TỔNG HỢP KHEN THƯỞNG",
+            documents: "DANH MỤC HỒ SƠ – MINH CHỨNG",
             equipment: "BÁO CÁO THIẾT BỊ ĐỘI",
+            summary: "BÁO CÁO TỔNG HỢP CÔNG TÁC ĐỘI",
           }[type];
           let body = "";
           if (type === "week")
@@ -7616,7 +7903,7 @@
                 x.location || "Chưa cập nhật",
               ]),
             )}<h3>III. Kế hoạch tuần sau</h3><p class="muted">Phần nhận xét/kế hoạch có thể bổ sung khi in; hệ thống không tự tạo số liệu ngoài dữ liệu nguồn.</p>`;
-          if (type === "scores")
+          if (["scores", "scores_month", "scores_semester", "scores_year", "ranking"].includes(type))
             body = !["approved", "locked"].includes(d.ctx.sheet?.status)
               ? '<div class="notice warn">Bảng tuần chưa được duyệt nên chưa có xếp hạng chính thức.</div>'
               : simpleTable(
@@ -7651,11 +7938,40 @@
                 statusLabel(x.status),
               ]),
             );
+          if (type === "incidents")
+            body = simpleTable(
+              ["Ngày", "Mã HS", "Họ tên", "Lớp", "Loại", "Nội dung", "Đề xuất", "Trạng thái"],
+              d.incidents.map((x) => [x.date, x.student_code, x.student_name, x.class_code, x.incident_type, x.content, x.proposed_deduction ?? "", statusLabel(x.status)]),
+            );
+          if (type === "plans")
+            body = simpleTable(
+              ["Mã", "Kế hoạch", "Cấp", "Bắt đầu", "Kết thúc", "Trạng thái"],
+              d.plans.map((x) => [x.code, x.name, x.level, x.start_date, x.end_date, statusLabel(x.status)]),
+            );
+          if (type === "organization")
+            body = simpleTable(
+              ["Họ tên", "Lớp", "Đội/ban", "Chức vụ", "Nhiệm kỳ"],
+              d.organization.map((x) => [x.name, x.class_name, x.unit, x.position, x.term]),
+            );
+          if (type === "programs")
+            body = simpleTable(
+              ["Chương trình", "Đối tượng", "Kết quả", "Ngày công nhận", "Trạng thái"],
+              d.programs.map((x) => [x.name, x.scope, x.result, x.recognized_date, statusLabel(x.status)]),
+            );
+          if (type === "commendations")
+            body = simpleTable(
+              ["Đối tượng", "Loại", "Cấp", "Thành tích", "Ngày", "Trạng thái"],
+              d.commendations.map((x) => [x.recipient, x.award_type, x.level, x.achievement, x.date, statusLabel(x.approval_status)]),
+            );
+          if (type === "documents")
+            body = simpleTable(
+              ["Tên hồ sơ", "Loại", "Số hiệu", "Ngày", "Trạng thái"],
+              d.documents.map((x) => [x.name, x.type, x.document_no, x.date, statusLabel(x.status)]),
+            );
           if (type === "equipment") {
-            const eq = await scoped("equipment");
             body = simpleTable(
               ["Mã", "Thiết bị", "Số lượng", "Tình trạng", "Nơi lưu"],
-              eq.map((x) => [
+              d.equipment.map((x) => [
                 x.code,
                 x.name,
                 `${x.quantity} ${x.unit || ""}`,
@@ -7664,15 +7980,18 @@
               ]),
             );
           }
+          if (type === "summary")
+            body = `<div class="metric-row"><div class="metric"><strong>${d.tasks.length}</strong><span>Công việc</span></div><div class="metric"><strong>${d.activities.length}</strong><span>Hoạt động</span></div><div class="metric"><strong>${d.incidents.length}</strong><span>Vi phạm</span></div><div class="metric"><strong>${d.commendations.length}</strong><span>Khen thưởng</span></div><div class="metric"><strong>${d.documents.length}</strong><span>Hồ sơ</span></div></div><h3>I. Tiến độ công việc</h3><p>Hoàn thành ${d.completed.length}/${d.tasks.length}; quá hạn ${d.overdue.length}.</p><h3>II. Hoạt động và phong trào</h3><p>${d.activities.length} hoạt động; ${d.programs.length} kết quả rèn luyện/phong trào.</p><h3>III. Thi đua và nề nếp</h3><p>${d.rank.length} lớp có dữ liệu xếp hạng; ${d.incidents.length} ghi nhận vi phạm.</p>`;
           return `<div class="center"><small>${esc(d.school?.name || "TRƯỜNG THCS")}</small><h2 style="margin:8px 0">${title}</h2><p>${esc(d.week?.name || "")} • ${esc(campusName(state.campusId))}</p></div><div class="split"><small>Tạo lúc: ${fmtDateTime(now())}</small><small>Phạm vi dữ liệu: ${esc(d.week?.name || "Năm học")} / ${esc(campusName(state.campusId))}</small></div><hr style="border:0;border-top:1px solid var(--line)">${body}<div style="display:grid;grid-template-columns:1fr 1fr;text-align:center;margin-top:35px"><div><strong>Người lập báo cáo</strong></div><div><strong>Xác nhận của nhà trường</strong></div></div>`;
         }
         function simpleTable(head, rows) {
           return `<div class="table-wrap" style="max-height:none"><table><thead><tr>${head.map((x) => `<th>${esc(x)}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((x, i) => `<td class="${i === 0 ? "wrap" : ""}">${esc(x)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${head.length}" class="empty">Không có dữ liệu trong phạm vi đã chọn.</td></tr>`}</tbody></table></div>`;
         }
         function exportReportCSV(type, d) {
+          return exportReportStructured(type, d, "csv");
           let head = [],
             rows = [];
-          if (type === "scores") {
+          if (["scores", "scores_month", "scores_semester", "scores_year", "ranking"].includes(type)) {
             head = ["Hạng", "Lớp", "Cơ sở", "Tổng điểm"];
             rows = d.rank.map((x) => [
               x.rank,
@@ -7704,6 +8023,114 @@
             `bao-cao-${type}-${today()}.csv`,
             "text/csv;charset=utf-8",
           );
+        }
+        async function exportReportStructured(type, d, format) {
+          let rows = [],
+            columns = [];
+          if (type === "scores") {
+            rows = d.rank.map((row) => ({
+              rank: row.rank,
+              class_name: row.class_name,
+              campus: campusName(row.campus_id),
+              total: row.total,
+            }));
+            columns = [
+              ["rank", "Hạng"],
+              ["class_name", "Lớp"],
+              ["campus", "Cơ sở"],
+              ["total", "Tổng điểm"],
+            ];
+          } else if (type === "activities") {
+            rows = d.activities.map((row) => ({
+              name: row.name,
+              category: row.category,
+              date: row.date,
+              location: row.location,
+              status: statusLabel(row.status),
+            }));
+            columns = [
+              ["name", "Hoạt động"],
+              ["category", "Nhóm"],
+              ["date", "Ngày"],
+              ["location", "Địa điểm"],
+              ["status", "Trạng thái"],
+            ];
+          } else if (type === "incidents") {
+            rows = d.incidents;
+            columns = [
+              ["incident_code", "Mã vi phạm"],
+              ["date", "Ngày"],
+              ["student_code", "Mã học sinh"],
+              ["student_name", "Họ tên"],
+              ["class_code", "Lớp"],
+              ["incident_type", "Loại"],
+              ["content", "Nội dung"],
+              ["proposed_deduction", "Điểm trừ đề xuất"],
+              ["status", "Trạng thái"],
+            ];
+          } else if (type === "plans") {
+            rows = d.plans;
+            columns = [["code", "Mã"], ["name", "Kế hoạch"], ["level", "Cấp"], ["start_date", "Bắt đầu"], ["end_date", "Kết thúc"], ["status", "Trạng thái"]];
+          } else if (type === "organization") {
+            rows = d.organization;
+            columns = [["name", "Họ tên"], ["class_name", "Lớp"], ["unit", "Đội/ban"], ["position", "Chức vụ"], ["term", "Nhiệm kỳ"]];
+          } else if (type === "programs") {
+            rows = d.programs;
+            columns = [["name", "Chương trình"], ["scope", "Đối tượng"], ["result", "Kết quả"], ["recognized_date", "Ngày công nhận"], ["status", "Trạng thái"]];
+          } else if (type === "commendations") {
+            rows = d.commendations;
+            columns = [["recipient", "Đối tượng"], ["award_type", "Loại"], ["level", "Cấp"], ["achievement", "Thành tích"], ["date", "Ngày"], ["approval_status", "Trạng thái"]];
+          } else if (type === "documents") {
+            rows = d.documents;
+            columns = [["name", "Tên hồ sơ"], ["type", "Loại"], ["document_no", "Số hiệu"], ["date", "Ngày"], ["status", "Trạng thái"]];
+          } else if (type === "equipment") {
+            rows = await scoped("equipment");
+            columns = [
+              ["code", "Mã"],
+              ["name", "Thiết bị"],
+              ["quantity", "Số lượng"],
+              ["unit", "Đơn vị"],
+              ["condition", "Tình trạng"],
+              ["location", "Nơi lưu"],
+            ];
+          } else if (type === "summary") {
+            rows = [
+              { metric: "Công việc", value: d.tasks.length },
+              { metric: "Hoạt động", value: d.activities.length },
+              { metric: "Vi phạm", value: d.incidents.length },
+              { metric: "Khen thưởng", value: d.commendations.length },
+              { metric: "Hồ sơ", value: d.documents.length },
+            ];
+            columns = [["metric", "Chỉ tiêu"], ["value", "Số lượng"]];
+          } else {
+            rows = d.tasks.map((row) => ({
+              title: row.title,
+              group: row.group,
+              campus: campusName(row.campus_id),
+              due_date: row.due_date,
+              status: statusLabel(row.status),
+              progress: row.progress,
+            }));
+            columns = [
+              ["title", "Công việc"],
+              ["group", "Nhóm"],
+              ["campus", "Cơ sở"],
+              ["due_date", "Hạn"],
+              ["status", "Trạng thái"],
+              ["progress", "Tiến độ"],
+            ];
+          }
+          try {
+            await upgrade.exportRows(
+              rows,
+              columns.map(([name, label]) => ({ name, label })),
+              `bao-cao-${type}-${today()}`,
+              $("#reportType option:checked").textContent.toUpperCase(),
+              format,
+            );
+          } catch (error) {
+            toast("Không thể xuất báo cáo: " + error.message, "bad");
+          }
         }
 
         async function renderAssistant() {
@@ -8143,21 +8570,114 @@
           const c = id ? await db.get("campuses", id) : {};
           openModal(
             id ? "Sửa cơ sở" : "Thêm cơ sở",
-            `<form id="campusForm"><div class="field"><label class="required">Tên cơ sở</label><input name="name" value="${esc(c.name || "")}" required></div><div class="field mt"><label>Mã cơ sở</label><input name="code" value="${esc(c.code || "")}"></div></form>`,
+            `<form id="campusForm"><div class="field"><label class="required">Tên cơ sở</label><input name="name" value="${esc(c.name || "")}" required maxlength="120" placeholder="Ví dụ: Cơ sở 1"></div><div class="field mt"><label class="required">Mã cơ sở</label><input name="code" value="${esc(c.code || "")}" required maxlength="30" pattern="[A-Za-z0-9_-]+" placeholder="Ví dụ: CS1"><span class="hint">Chỉ dùng chữ không dấu, số, dấu gạch ngang hoặc gạch dưới. Mã cơ sở phải duy nhất.</span></div></form>`,
             `<button class="btn" id="cancelCampus">Hủy</button><button class="btn primary" id="saveCampus">Lưu</button>`,
           );
           $("#cancelCampus").onclick = closeModal;
           $("#saveCampus").onclick = async () => {
             const f = $("#campusForm");
             if (!f.reportValidity()) return;
-            await db.put("campuses", {
-              ...c,
-              ...Object.fromEntries(new FormData(f)),
-            });
-            closeModal();
-            await loadContext();
-            toast("Đã lưu cơ sở");
-            renderSettings();
+            const values = Object.fromEntries(new FormData(f)),
+              name = String(values.name || "").trim(),
+              code = String(values.code || "").trim().toUpperCase(),
+              campuses = await db.all("campuses");
+            if (!name || !code) return;
+            if (
+              campuses.some(
+                (row) =>
+                  row.id !== c.id &&
+                  normalizeText(row.name) === normalizeText(name),
+              )
+            )
+              return toast("Tên cơ sở đã tồn tại.", "bad");
+            if (
+              campuses.some(
+                (row) =>
+                  row.id !== c.id &&
+                  String(row.code || "").toUpperCase() === code,
+              )
+            )
+              return toast("Mã cơ sở đã tồn tại.", "bad");
+            const button = $("#saveCampus");
+            button.disabled = true;
+            try {
+              await db.put("campuses", {
+                ...c,
+                id: c.id || uid(),
+                name,
+                code,
+              });
+              closeModal();
+              await loadContext();
+              toast(id ? "Đã cập nhật cơ sở" : "Đã thêm cơ sở");
+              await renderSettingsPanel("context");
+            } catch (error) {
+              button.disabled = false;
+              toast("Không thể lưu cơ sở: " + error.message, "bad");
+            }
+          };
+        }
+        async function deleteCampus(id) {
+          const campuses = await db.all("campuses"),
+            campus = campuses.find((row) => row.id === id);
+          if (!campus) return toast("Không tìm thấy cơ sở.", "bad");
+          if (campuses.length <= 1)
+            return toast("Phải giữ lại ít nhất một cơ sở.", "bad");
+          const referenceStores = [
+              ["classes", "lớp"],
+              ["plans", "kế hoạch"],
+              ["tasks", "công việc"],
+              ["calendar_events", "lịch hoạt động"],
+              ["activities", "hoạt động Đội"],
+              ["criteria_sets", "bộ tiêu chí"],
+              ["weekly_score_sheets", "bảng thi đua"],
+              ["score_entries", "dòng điểm"],
+              ["ranking_snapshots", "bảng xếp hạng"],
+              ["team_units", "đơn vị Đội"],
+              ["training_records", "bản ghi rèn luyện"],
+              ["programs", "phong trào"],
+              ["commendations", "khen thưởng"],
+              ["documents", "hồ sơ"],
+              ["equipment", "thiết bị"],
+              ["generated_reports", "báo cáo"],
+            ],
+            usage = [];
+          for (const [store, label] of referenceStores) {
+            const count = (await db.allIncludingDeleted(store)).filter(
+              (row) => !row.deleted_at && row.campus_id === id,
+            ).length;
+            if (count) usage.push(`${count} ${label}`);
+          }
+          if (usage.length) {
+            openModal(
+              "Chưa thể xóa cơ sở",
+              `<div class="notice warn"><strong>${esc(campus.name)}</strong> đang được dùng bởi ${esc(usage.join(", "))}. Để bảo toàn dữ liệu lịch sử, hãy sửa tên hoặc mã cơ sở; chỉ xóa được cơ sở chưa phát sinh dữ liệu.</div>`,
+              `<button class="btn" id="closeCampusUsage">Đóng</button><button class="btn primary" id="editUsedCampus">Sửa cơ sở</button>`,
+            );
+            $("#closeCampusUsage").onclick = closeModal;
+            $("#editUsedCampus").onclick = () => campusForm(id);
+            return;
+          }
+          openModal(
+            "Xóa cơ sở chưa sử dụng",
+            `<p>Xóa <strong>${esc(campus.name)}</strong> (${esc(campus.code || "không có mã")})?</p><div class="notice warn">Thao tác được lưu vào nhật ký và hàng đợi đồng bộ. Cơ sở đã có dữ liệu liên quan sẽ không được phép xóa.</div>`,
+            `<button class="btn" id="cancelDeleteCampus">Hủy</button><button class="btn danger" id="confirmDeleteCampus">Xóa cơ sở</button>`,
+          );
+          $("#cancelDeleteCampus").onclick = closeModal;
+          $("#confirmDeleteCampus").onclick = async () => {
+            const button = $("#confirmDeleteCampus");
+            button.disabled = true;
+            try {
+              await db.remove("campuses", id);
+              if (state.campusId === id) state.campusId = "all";
+              closeModal();
+              await loadContext();
+              toast("Đã xóa cơ sở chưa sử dụng");
+              await renderSettingsPanel("context");
+            } catch (error) {
+              button.disabled = false;
+              toast("Không thể xóa cơ sở: " + error.message, "bad");
+            }
           };
         }
         function yearForm() {
@@ -8209,23 +8729,48 @@
           const c = id
             ? await db.get("classes", id)
             : { active: true, campus_id: state.cache.campuses[0]?.id };
+          const [school] = await db.all("schools"),
+            allowedGrades =
+              school?.school_level === "TH"
+                ? [1, 2, 3, 4, 5]
+                : school?.school_level === "THCS"
+                  ? [6, 7, 8, 9]
+                  : [1, 2, 3, 4, 5, 6, 7, 8, 9];
           openModal(
             id ? "Sửa lớp" : "Thêm lớp",
-            `<form id="classForm"><div class="form-grid"><div class="field"><label class="required">Tên lớp/chi đội</label><input name="class_name" value="${esc(c.class_name || "")}" required></div><div class="field"><label class="required">Khối</label><select name="grade">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((g) => `<option value="${g}" ${Number(c.grade) === g ? "selected" : ""}>Khối ${g}</option>`).join("")}</select></div><div class="field"><label class="required">Cơ sở</label><select name="campus_id">${state.cache.campuses.map((x) => `<option value="${x.id}" ${c.campus_id === x.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div><div class="field"><label>Giáo viên chủ nhiệm</label><input name="teacher" value="${esc(c.teacher || "")}"></div><label class="check-row"><input type="checkbox" name="active" value="true" ${c.active !== false ? "checked" : ""}> Đang hoạt động</label></div></form>`,
+            `<form id="classForm"><div class="form-grid"><div class="field"><label class="required">Mã lớp</label><input name="code" value="${esc(c.code || "")}" required maxlength="40" placeholder="VD: CS1-6A1"></div><div class="field"><label class="required">Tên lớp/chi đội</label><input name="class_name" value="${esc(c.class_name || "")}" required maxlength="80"></div><div class="field"><label class="required">Khối</label><select name="grade">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((g) => `<option value="${g}" ${Number(c.grade) === g ? "selected" : ""}>Khối ${g}</option>`).join("")}</select></div><div class="field"><label class="required">Cơ sở</label><select name="campus_id">${state.cache.campuses.map((x) => `<option value="${x.id}" ${c.campus_id === x.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div><div class="field"><label>Giáo viên chủ nhiệm</label><input name="teacher" value="${esc(c.teacher || "")}" maxlength="150"></div><div class="field full"><label>Ghi chú</label><textarea name="notes" maxlength="500">${esc(c.notes || "")}</textarea></div><label class="check-row"><input type="checkbox" name="active" value="true" ${c.active !== false ? "checked" : ""}> Đang hoạt động</label></div></form>`,
             `<button class="btn" id="cancelClass">Hủy</button><button class="btn primary" id="saveClass">Lưu lớp</button>`,
           );
+          const gradeSelect = $("#classForm [name=grade]");
+          for (const option of gradeSelect.options) {
+            const allowed = allowedGrades.includes(Number(option.value));
+            option.hidden = !allowed;
+            option.disabled = !allowed;
+          }
+          if (!allowedGrades.includes(Number(gradeSelect.value)))
+            gradeSelect.value = String(allowedGrades[0]);
           $("#cancelClass").onclick = closeModal;
           $("#saveClass").onclick = async () => {
             const f = $("#classForm");
             if (!f.reportValidity()) return;
-            const d = Object.fromEntries(new FormData(f)),
-              dupe = (await db.all("classes")).some(
-                (x) =>
-                  x.id !== id &&
-                  x.school_year_id === state.yearId &&
-                  x.class_name.toLowerCase() === d.class_name.toLowerCase(),
+            const d = Object.fromEntries(new FormData(f));
+            d.code = d.code.trim().replace(/\s+/g, "").toUpperCase();
+            d.class_name = d.class_name.trim().replace(/\s+/g, " ");
+            const normalizedName = normalizeText(d.class_name).replace(/\s+/g, " ");
+            const dupe = (await db.all("classes")).find(
+              (x) =>
+                x.id !== id &&
+                x.school_year_id === state.yearId &&
+                (String(x.code || "").trim().toUpperCase() === d.code ||
+                  (x.campus_id === d.campus_id &&
+                    normalizeText(x.class_name || "").replace(/\s+/g, " ") ===
+                      normalizedName)),
+            );
+            if (dupe)
+              return toast(
+                "Trùng mã lớp hoặc trùng tên lớp trong cùng cơ sở và năm học.",
+                "bad",
               );
-            if (dupe) return toast("Tên lớp đã tồn tại trong năm học.", "bad");
             await db.put("classes", {
               ...c,
               ...d,
@@ -8420,6 +8965,8 @@
           for (const [store, label, page, field] of [
             ["tasks", "Công việc", "tasks", "title"],
             ["classes", "Lớp", "settings", "class_name"],
+            ["students", "Học sinh", "students", "full_name"],
+            ["student_incidents", "Vi phạm", "incidents", "incident_type"],
             ["activities", "Hoạt động", "activities", "name"],
             ["plans", "Kế hoạch", "plans", "name"],
             ["documents", "Hồ sơ", "documents", "name"],
@@ -8435,7 +8982,7 @@
                 sub:
                   store === "classes"
                     ? campusName(r.campus_id)
-                    : r.group || r.type || "",
+                    : r.class_code || r.student_name || r.group || r.type || "",
               })),
             );
           }
@@ -8466,6 +9013,8 @@
           for (const [store, label, page, field] of [
             ["tasks", "Công việc", "tasks", "title"],
             ["classes", "Lớp", "settings", "class_name"],
+            ["students", "Học sinh", "students", "full_name"],
+            ["student_incidents", "Vi phạm", "incidents", "incident_type"],
             ["activities", "Hoạt động", "activities", "name"],
             ["plans", "Kế hoạch", "plans", "name"],
             ["documents", "Hồ sơ", "documents", "name"],
@@ -8481,7 +9030,7 @@
                 sub:
                   store === "classes"
                     ? campusName(r.campus_id)
-                    : r.group || r.type || "",
+                    : r.class_code || r.student_name || r.group || r.type || "",
               })),
             );
           }
@@ -9515,13 +10064,40 @@
         }
         async function renderSchoolPanel(panel) {
           const [school] = await db.all("schools");
-          panel.innerHTML = `<div class="card"><div class="card-head"><h2>Thông tin trường</h2></div><div class="card-body"><form id="schoolCenterForm"><div class="form-grid"><div class="field full"><label class="required">Tên trường</label><input name="name" value="${esc(school?.name || "")}" required></div><div class="field"><label>Mã trường</label><input name="code" value="${esc(school?.code || "")}"></div><div class="field"><label>Địa chỉ</label><input name="address" value="${esc(school?.address || "")}"></div><div class="field"><label>Người lập báo cáo</label><input name="reporter" value="${esc(school?.reporter || "")}"></div><div class="field"><label>Chức danh</label><input name="reporter_title" value="${esc(school?.reporter_title || "Tổng phụ trách Đội")}"></div></div></form><button class="btn primary mt" id="saveSchoolCenter">Lưu thông tin</button></div></div>`;
+          const logo = String(school?.logo_data_url || "").startsWith(
+            "data:image/",
+          )
+            ? school.logo_data_url
+            : "";
+          panel.innerHTML = `<div class="grid-2"><div class="card"><div class="card-head"><h2>Thông tin trường</h2><span class="meta">Dùng trên báo cáo và biểu mẫu</span></div><div class="card-body"><form id="schoolCenterForm"><div class="form-grid"><div class="field full"><label class="required">Tên trường</label><input name="name" value="${esc(school?.name || "")}" required maxlength="180"></div><div class="field"><label class="required">Cấp học</label><select name="school_level" required><option value="TH" ${school?.school_level === "TH" ? "selected" : ""}>Tiểu học</option><option value="THCS" ${!school?.school_level || school?.school_level === "THCS" ? "selected" : ""}>Trung học cơ sở</option><option value="LIEN_CAP" ${school?.school_level === "LIEN_CAP" ? "selected" : ""}>Liên cấp TH–THCS</option></select></div><div class="field"><label>Mã trường</label><input name="code" value="${esc(school?.code || "")}" maxlength="60"></div><div class="field full"><label>Địa chỉ</label><input name="address" value="${esc(school?.address || "")}" maxlength="250"></div><div class="field"><label>Điện thoại</label><input name="phone" value="${esc(school?.phone || "")}" inputmode="tel" maxlength="30"></div><div class="field"><label>Email</label><input name="email" value="${esc(school?.email || "")}" type="email" maxlength="150"></div><div class="field"><label>Tên Liên đội/Sao nhi đồng</label><input name="team_name" value="${esc(school?.team_name || "Liên đội")}" maxlength="180"></div><div class="field"><label>Năm học ghi trên biểu mẫu</label><input name="current_school_year" value="${esc(school?.current_school_year || state.cache.years.find((year) => year.id === state.yearId)?.name || "")}" maxlength="30"></div><div class="field"><label>Người lập báo cáo</label><input name="reporter" value="${esc(school?.reporter || "")}" maxlength="150"></div><div class="field"><label>Chức danh</label><input name="reporter_title" value="${esc(school?.reporter_title || "Tổng phụ trách Đội")}" maxlength="120"></div></div></form><button class="btn primary mt" id="saveSchoolCenter">Lưu thông tin</button></div></div><div class="card"><div class="card-head"><h2>Logo trường</h2><span class="meta">PNG/JPG/WebP/SVG • tối đa 1 MB</span></div><div class="card-body"><div id="schoolLogoPreview" style="min-height:180px;display:grid;place-items:center;border:1px dashed var(--line);border-radius:12px;background:var(--soft)">${logo ? `<img src="${esc(logo)}" alt="Logo trường" style="max-width:180px;max-height:160px;object-fit:contain">` : '<span class="muted">Chưa có logo</span>'}</div><div class="toolbar mt"><label class="btn" for="schoolLogoFile">Chọn logo</label><input id="schoolLogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="hidden"><button class="btn danger" id="removeSchoolLogo" type="button" ${logo ? "" : "disabled"}>Xóa logo</button></div><div class="notice mt">Logo được lưu cục bộ trong hồ sơ trường và đi cùng gói sao lưu; không tải lên dịch vụ ngoài ứng dụng.</div></div></div></div>`;
+          let pendingLogo = logo;
+          $("#schoolLogoFile").onchange = async (event) => {
+            const file = event.target.files[0];
+            event.target.value = "";
+            if (!file) return;
+            if (!file.type.startsWith("image/") || file.size > 1024 * 1024)
+              return toast("Logo phải là ảnh và không vượt quá 1 MB.", "bad");
+            pendingLogo = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(String(reader.result || ""));
+              reader.onerror = () => reject(new Error("Không đọc được logo."));
+              reader.readAsDataURL(file);
+            });
+            $("#schoolLogoPreview").innerHTML = `<img src="${esc(pendingLogo)}" alt="Logo trường" style="max-width:180px;max-height:160px;object-fit:contain">`;
+            $("#removeSchoolLogo").disabled = false;
+          };
+          $("#removeSchoolLogo").onclick = () => {
+            pendingLogo = "";
+            $("#schoolLogoPreview").innerHTML = '<span class="muted">Chưa có logo</span>';
+            $("#removeSchoolLogo").disabled = true;
+          };
           $("#saveSchoolCenter").onclick = async () => {
             const f = $("#schoolCenterForm");
             if (!f.reportValidity()) return;
             await db.put("schools", {
               ...(school || {}),
               ...Object.fromEntries(new FormData(f)),
+              logo_data_url: pendingLogo,
             });
             toast("Đã lưu thông tin trường");
           };
@@ -9538,8 +10114,15 @@
             ),
             weeks = (await db.all("school_weeks")).filter(
               (row) => row.school_year_id === state.yearId,
-            );
-          panel.innerHTML = `<div class="card"><div class="card-head"><h2>Vòng đời năm học</h2><span class="meta">${years.length} năm</span></div><div class="card-body"><div class="toolbar"><button class="btn primary" id="createAcademicYear">＋ Tạo năm học mới</button><button class="btn" id="closeAcademicYear" ${activeYear?.status === "archived" ? "disabled" : ""}>Đóng năm đang chọn</button></div><div class="notice">Năm đã đóng mặc định chỉ đọc. Muốn hiệu chỉnh phải mở quyền trong phiên và ghi lý do; mọi thao tác được lưu nhật ký.</div><div class="table-wrap" style="max-height:360px"><table><thead><tr><th>Năm học</th><th>Thời gian</th><th>Học kỳ/tuần</th><th>Trạng thái</th><th>Quyền sửa phiên này</th><th>Thao tác</th></tr></thead><tbody>${years
+            ),
+            campuses = await db.all("campuses"),
+            classes = await db.all("classes"),
+            classCountByCampus = classes.reduce((result, row) => {
+              if (row.campus_id)
+                result[row.campus_id] = (result[row.campus_id] || 0) + 1;
+              return result;
+            }, {});
+          panel.innerHTML = `<div class="card"><div class="card-head"><h2>Quản lý cơ sở</h2><span class="meta">${campuses.length} cơ sở</span></div><div class="card-body"><div class="toolbar"><button class="btn primary" id="addCampusCenter">＋ Thêm cơ sở</button></div><div class="notice">Có thể thêm cơ sở mới hoặc sửa tên, mã cơ sở bất cứ lúc nào. Việc đổi tên/mã không làm mất liên kết dữ liệu. Chỉ xóa được cơ sở chưa có lớp hoặc dữ liệu nghiệp vụ.</div><div class="table-wrap" style="max-height:300px"><table><thead><tr><th>TT</th><th>Tên cơ sở</th><th>Mã cơ sở</th><th>Số lớp</th><th>Thao tác</th></tr></thead><tbody>${campuses.map((campus, index) => `<tr><td>${index + 1}</td><td class="wrap"><strong>${esc(campus.name)}</strong></td><td>${esc(campus.code || "—")}</td><td>${Number(classCountByCampus[campus.id] || 0).toLocaleString("vi-VN")}</td><td><div class="row-actions"><button class="link-btn" data-edit-campus="${campus.id}">Sửa</button><button class="link-btn red" data-delete-campus="${campus.id}">Xóa</button></div></td></tr>`).join("") || '<tr><td colspan="5" class="empty">Chưa có cơ sở. Hãy chọn “Thêm cơ sở”.</td></tr>'}</tbody></table></div></div></div><div class="card mt"><div class="card-head"><h2>Vòng đời năm học</h2><span class="meta">${years.length} năm</span></div><div class="card-body"><div class="toolbar"><button class="btn primary" id="createAcademicYear">＋ Tạo năm học mới</button><button class="btn" id="closeAcademicYear" ${activeYear?.status === "archived" ? "disabled" : ""}>Đóng năm đang chọn</button></div><div class="notice">Năm đã đóng mặc định chỉ đọc. Muốn hiệu chỉnh phải mở quyền trong phiên và ghi lý do; mọi thao tác được lưu nhật ký.</div><div class="table-wrap" style="max-height:360px"><table><thead><tr><th>Năm học</th><th>Thời gian</th><th>Học kỳ/tuần</th><th>Trạng thái</th><th>Quyền sửa phiên này</th><th>Thao tác</th></tr></thead><tbody>${years
             .map((year) => {
               const override = state.yearEditOverrides.has(year.id);
               return `<tr><td><strong>${esc(year.name)}</strong>${year.is_current ? " • hiện hành" : ""}</td><td>${fmtDate(year.start_date)} – ${fmtDate(year.end_date)}</td><td>${year.id === state.yearId ? `${semesters.length}/${weeks.length}` : "—"}</td><td>${year.status === "archived" || year.read_only ? '<span class="badge yellow">Đã đóng • chỉ đọc</span>' : '<span class="badge green">Đang mở</span>'}</td><td>${override ? '<span class="badge red">Đang mở sửa có lý do</span>' : "Mặc định"}</td><td>${year.status === "archived" || year.read_only ? `<button class="link-btn" data-year-edit="${year.id}">${override ? "Đóng quyền sửa" : "Mở sửa có lý do"}</button>` : "—"}</td></tr>`;
@@ -9547,6 +10130,37 @@
             .join(
               "",
             )}</tbody></table></div></div></div><div class="grid-2 mt"><div class="card"><div class="card-head"><h2>Quy tắc tạo năm</h2></div><div class="card-body"><ul><li>Tạo mới học kỳ và 40 tuần theo ngày bắt đầu.</li><li>Chỉ sao chép lớp và bộ tiêu chí khi được chọn.</li><li>Không sao chép điểm, xếp hạng, hoạt động, công việc đã phát sinh hay báo cáo cũ.</li></ul></div></div><div class="card"><div class="card-head"><h2>Quy tắc đóng năm</h2></div><div class="card-body"><ul><li>Kiểm tra bảng điểm chưa khóa, việc chưa xong và báo cáo nháp.</li><li>Tạo snapshot bảo vệ, báo cáo tổng kết chốt và gói năm học.</li><li>Sau khi đóng, bản ghi năm cũ chuyển sang chỉ đọc.</li></ul></div></div></div>`;
+          $("#addCampusCenter").onclick = () => campusForm();
+          $("#addCampusCenter").parentElement.insertAdjacentHTML(
+            "beforeend",
+            '<button class="btn" id="campusTemplate">Tải mẫu Excel</button><button class="btn" id="campusImport">Nhập danh sách</button><button class="btn" id="campusExportCsv">CSV</button><button class="btn" id="campusExportXlsx">Excel</button>',
+          );
+          $("#campusTemplate").onclick = () =>
+            upgrade.downloadImportTemplate("campuses", true);
+          $("#campusImport").onclick = () => {
+            state.importType = "campuses";
+            state.importSession = null;
+            go("imports");
+          };
+          const campusColumns = [
+            { name: "code", label: "Mã cơ sở" },
+            { name: "name", label: "Tên cơ sở" },
+            { name: "address", label: "Địa chỉ" },
+            { name: "status", label: "Trạng thái" },
+            { name: "notes", label: "Ghi chú" },
+          ];
+          $("#campusExportCsv").onclick = () =>
+            upgrade.exportRows(campuses, campusColumns, `co-so-${today()}`, "DANH SÁCH CƠ SỞ", "csv");
+          $("#campusExportXlsx").onclick = () =>
+            upgrade.exportRows(campuses, campusColumns, `co-so-${today()}`, "DANH SÁCH CƠ SỞ", "xlsx");
+          $$('[data-edit-campus]').forEach(
+            (button) =>
+              (button.onclick = () => campusForm(button.dataset.editCampus)),
+          );
+          $$('[data-delete-campus]').forEach(
+            (button) =>
+              (button.onclick = () => deleteCampus(button.dataset.deleteCampus)),
+          );
           $("#createAcademicYear").onclick = showCreateAcademicYear;
           $("#closeAcademicYear").onclick = () =>
             closeAcademicYear(state.yearId);
@@ -9914,6 +10528,7 @@
           };
         }
         async function renderClassPanel(panel) {
+          return upgrade.renderClassManagement(panel);
           const classes = await scoped("classes");
           panel.innerHTML = `<div class="card"><div class="card-head"><h2>Danh sách lớp</h2><span class="meta">${classes.length} lớp</span></div><div class="card-body"><div class="toolbar"><button class="btn" id="addClassCenter">＋ Lớp</button><button class="btn" id="importClassCenter">Nhập CSV/dán Excel</button></div><div class="table-wrap" style="max-height:430px"><table><thead><tr><th>Lớp</th><th>Khối</th><th>Cơ sở</th><th>Giáo viên chủ nhiệm</th><th>Trạng thái</th><th></th></tr></thead><tbody>${classes.map((c) => `<tr><td>${esc(c.class_name)}</td><td>${esc(c.grade)}</td><td>${esc(campusName(c.campus_id))}</td><td>${esc(c.teacher || "—")}</td><td>${c.active !== false ? '<span class="badge green">Đang dùng</span>' : '<span class="badge">Ngừng dùng</span>'}</td><td><button class="link-btn" data-edit-center-class="${c.id}">Sửa</button></td></tr>`).join("")}</tbody></table></div></div></div>`;
           $("#addClassCenter").onclick = () => classForm();
@@ -10156,6 +10771,40 @@
             ) +
               `<div class="toolbar"><input class="grow" id="documentSearch" value="${esc(query)}" placeholder="Tìm tên, số hiệu, thẻ…"><select id="documentTypeFilter"><option value="all">Tất cả loại tệp</option><option value="pdf">PDF</option><option value="image">Hình ảnh</option><option value="office">Word/Excel/PowerPoint</option></select><button class="btn small" id="toggleDocumentView">${state.documentView === "grid" ? "☷ Danh sách" : "▦ Dạng lưới"}</button><span class="muted">${docs.length} tài liệu</span></div><div class="document-layout"><aside class="folder-pane"><strong>Thư mục</strong><button class="folder-row ${activeFolder === "root" ? "active" : ""}" data-folder="root">▧ Tất cả tài liệu</button>${folders.map((f) => `<button class="folder-row ${activeFolder === f.id ? "active" : ""}" data-folder="${f.id}">▸ ${esc(f.name)}</button>`).join("")}<button class="folder-row ${trash ? "active" : ""}" data-folder="trash">♲ Thùng rác</button><hr style="border:0;border-top:1px solid var(--line)"><small class="muted">Dung lượng ước tính</small><div class="storage-meter mt"><span style="width:${pct}%"></span></div><small>${formatBytes(used)}${quota ? ` / ${formatBytes(quota)} (${pct}%)` : ""}</small><button class="btn small mt" id="requestPersistent">Bảo vệ lưu trữ</button></aside><section><div class="drop-zone ${trash ? "hidden" : ""}" id="documentDrop">Kéo thả nhiều tệp vào đây hoặc dán ảnh từ clipboard</div><div class="${state.documentView === "grid" ? "file-grid" : "table-wrap"} mt" id="documentItems">${renderDocumentItems(docs, attachMap, trash)}</div></section></div>`,
           );
+          $(".page-actions").insertAdjacentHTML(
+            "afterbegin",
+            '<button class="btn" id="documentImportCenter">Trung tâm nhập</button><button class="btn" id="documentExportCsv">CSV</button><button class="btn" id="documentExportXlsx">Excel</button>',
+          );
+          $("#documentImportCenter").onclick = () => {
+            state.importType = "documents";
+            state.importSession = null;
+            go("imports");
+          };
+          const documentRows = docs.map((row) => {
+            const attachment = attachMap.get(row.id);
+            return {
+              ...row,
+              file_name: attachment?.original_name || "",
+              extension: attachment?.extension || row.type || "",
+              size: attachment?.size || 0,
+              checksum: attachment?.sha256 || "",
+            };
+          });
+          const documentColumns = [
+            { name: "name", label: "Tên hồ sơ" },
+            { name: "type", label: "Phân loại" },
+            { name: "document_no", label: "Số hiệu" },
+            { name: "date", label: "Ngày" },
+            { name: "file_name", label: "Tên tệp" },
+            { name: "extension", label: "Định dạng" },
+            { name: "size", label: "Dung lượng byte" },
+            { name: "checksum", label: "SHA-256" },
+            { name: "status", label: "Trạng thái" },
+          ];
+          $("#documentExportCsv").onclick = () =>
+            upgrade.exportRows(documentRows, documentColumns, `ho-so-${today()}`, "DANH MỤC HỒ SƠ – MINH CHỨNG", "csv");
+          $("#documentExportXlsx").onclick = () =>
+            upgrade.exportRows(documentRows, documentColumns, `ho-so-${today()}`, "DANH MỤC HỒ SƠ – MINH CHỨNG", "xlsx");
           $("#documentSearch").oninput = debounce(() => {
             state.documentSearch = $("#documentSearch").value;
             renderDocuments();
@@ -10164,6 +10813,18 @@
             state.documentView =
               state.documentView === "grid" ? "list" : "grid";
             renderDocuments();
+          };
+          $("#documentTypeFilter").onchange = () => {
+            const type = $("#documentTypeFilter").value;
+            const filtered = docs.filter((row) => {
+              const extension = String(attachMap.get(row.id)?.extension || row.type || "").toLowerCase();
+              if (type === "all") return true;
+              if (type === "pdf") return extension === "pdf";
+              if (type === "image") return ["png", "jpg", "jpeg", "webp"].includes(extension);
+              return ["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(extension);
+            });
+            $("#documentItems").innerHTML = renderDocumentItems(filtered, attachMap, trash);
+            bindDocumentActions(trash);
           };
           $$("[data-folder]").forEach(
             (b) =>
@@ -10310,13 +10971,18 @@
           });
           return true;
         }
-        async function saveDocumentFiles(files) {
+        async function saveDocumentFiles(files, metadata = []) {
           if (!files.length) return;
           const limitMb = Number(await setting("max_file_mb")) || 25,
             allowed = /\.(pdf|docx?|xlsx?|pptx?|txt|csv|png|jpe?g|webp|zip)$/i;
           let saved = 0;
-          for (const file of files) {
-            const clean = file.name
+          for (const [fileIndex, file] of files.entries()) {
+            const meta = metadata[fileIndex] || {};
+            const extension = file.name.includes(".")
+              ? `.${file.name.split(".").pop()}`
+              : "";
+            const requestedName = `${String(meta.name || file.name.replace(/\.[^.]+$/, "")).trim().replace(/\.[^.]+$/, "")}${extension}`;
+            const clean = requestedName
               .replace(/[\\/:*?"<>|\x00-\x1F]/g, "_")
               .slice(0, 180);
             if (!allowed.test(clean)) {
@@ -10341,13 +11007,15 @@
             const ext = clean.split(".").pop().toLowerCase(),
               doc = await db.put("documents", {
                 name: clean.replace(/\.[^.]+$/, ""),
-                type: ext,
+                type: meta.category || ext,
                 folder_id:
                   state.documentFolderId === "root"
                     ? "root"
                     : state.documentFolderId,
-                tags: "",
-                description: "",
+                tags: meta.category || "",
+                description: meta.related_module
+                  ? `Tệp gốc được gắn với ${meta.related_module}${meta.related_record_id ? ` • ${meta.related_record_id}` : ""}.`
+                  : "",
                 status: "approved",
                 school_year_id: state.yearId,
                 campus_id: state.campusId,
@@ -10374,6 +11042,12 @@
               size: file.size,
               note: "Phiên bản đầu",
             });
+            if (meta.related_module)
+              await db.put("document_links", {
+                document_id: doc.id,
+                related_module: meta.related_module,
+                related_record_id: meta.related_record_id || "",
+              });
             saved++;
           }
           toast(`Đã lưu ${saved}/${files.length} tệp trên thiết bị`);
@@ -11310,6 +11984,39 @@
           return new Blob(parts, { type: type || "application/octet-stream" });
         }
 
+        upgrade = window.TPTUpgradeFeatures.create({
+          APP,
+          STORES,
+          state,
+          db,
+          cloud,
+          tabCoordinator,
+          engine: window.TPTImportEngine,
+          $,
+          $$,
+          uid,
+          now,
+          today,
+          esc,
+          fmtDate,
+          fmtDateTime,
+          normalizeText,
+          campusName,
+          pageHead,
+          setContent,
+          toast,
+          openModal,
+          closeModal,
+          download,
+          loadContext,
+          refreshContext,
+          createInternalSnapshot,
+          saveDocumentFiles,
+          classForm,
+          setting,
+          simpleTable,
+          go,
+        });
         boot();
       })();
     </script>

@@ -60,7 +60,7 @@
           if (!/^[0-9A-Za-z._-]+\.apps\.googleusercontent\.com$/.test(clientId)) return void (error.textContent = "OAuth Client ID không đúng định dạng Web application.");
           if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gmail)) return void (error.textContent = "Gmail không hợp lệ.");
           const emailHash = await sha256(gmail), upperCode = code.replace(/-/g, "_").toUpperCase(), config = {
-            APP_VERSION: "3.1.0-rc.1", BUILD_ID: "20260814-drive-rc1", SCHEMA_VERSION: 9,
+            APP_VERSION: "3.1.0-rc.1", BUILD_ID: "20260814-drive-rc1", SCHEMA_VERSION: 10,
             APP_ID: `vn.giaoducso40.tpt.thcs.${code.replace(/-/g, "_")}`,
             SCHOOL_PROFILE_ID: `thcs-${code}-profile-001`, APP_NAMESPACE: `tpt_thcs_${code.replace(/-/g, "_")}_profile_001`, DB_NAME: `TPT_DOI_THCS_${upperCode}_DB`,
             SCHOOL_NAME: schoolName, SCHOOL_LEVEL: "THCS", GOOGLE_CLIENT_ID: clientId,
